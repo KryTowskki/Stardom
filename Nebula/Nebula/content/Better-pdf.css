@@ -1,0 +1,350 @@
+/* Zia: Firefox's PDF viewer in Dia's look. Loaded into each PDF viewer page
+ * by actors/ZiaPdf.sys.mjs, which also moves PDF.js's controls into Dia's
+ * order and adds the few Dia has that PDF.js doesn't. The viewer only lets
+ * pictures in as data: URLs, so the icons are written out below. */
+
+html.ziaPdf {
+  --zia-pdf-toolbar: 39px;
+  --zia-pdf-tools: 36px;
+  --zia-pdf-blue: #8ab4f5;
+
+  color-scheme: dark !important;
+  --toolbar-height: var(--zia-pdf-toolbar) !important;
+  --toolbar-bg-color: #3d3d3d !important;
+  --body-bg-color: #282828 !important;
+  --main-color: #fff !important;
+  --toolbar-icon-bg-color: #fff !important;
+  --toolbar-icon-hover-bg-color: #fff !important;
+  --toolbar-icon-opacity: 1 !important;
+  --toolbar-box-shadow: none !important;
+  --toolbar-border-bottom: none !important;
+  --toolbar-border-color: transparent !important;
+  --separator-color: rgba(255, 255, 255, 0.18) !important;
+  --field-color: #fff !important;
+  --field-bg-color: #1e1e1e !important;
+  --field-border-color: transparent !important;
+
+  --toolbarButton-viewsManagerToggle-icon: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M4 7h16M4 12h16M4 17h16%22/%3E%3C/svg%3E") !important;
+  --toolbarButton-zoomOut-icon: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M5 12h14%22/%3E%3C/svg%3E") !important;
+  --toolbarButton-zoomIn-icon: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M12 5v14M5 12h14%22/%3E%3C/svg%3E") !important;
+  --toolbarButton-download-icon: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2%22/%3E%3Cpath d=%22M7 11l5 5l5 -5M12 4v12%22/%3E%3C/svg%3E") !important;
+  --toolbarButton-print-icon: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2%22/%3E%3Cpath d=%22M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4%22/%3E%3Crect x=%227%22 y=%2213%22 width=%2210%22 height=%228%22 rx=%222%22/%3E%3C/svg%3E") !important;
+  --toolbarButton-secondaryToolbarToggle-icon: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23000%22%3E%3Ccircle cx=%2212%22 cy=%225%22 r=%221.6%22/%3E%3Ccircle cx=%2212%22 cy=%2212%22 r=%221.6%22/%3E%3Ccircle cx=%2212%22 cy=%2219%22 r=%221.6%22/%3E%3C/svg%3E") !important;
+}
+
+html.ziaPdf.ziaPdfToolsOpen {
+  --toolbar-height: calc(var(--zia-pdf-toolbar) + var(--zia-pdf-tools)) !important;
+}
+
+/* ------------------------------------------------------------------ */
+/* The toolbar: title | page, zoom, fit, rotate, pen, undo, redo |       */
+/* download, print, more                                                */
+/* ------------------------------------------------------------------ */
+
+html.ziaPdf #toolbarContainer {
+  height: var(--toolbar-height) !important;
+  padding: 0 8px !important;
+  background-color: #3d3d3d !important;
+}
+
+html.ziaPdf #toolbarViewer {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  height: var(--zia-pdf-toolbar) !important;
+}
+
+html.ziaPdf #toolbarViewer > * {
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-start !important;
+  gap: 2px;
+  margin: 0 !important;
+  min-width: 0;
+}
+
+html.ziaPdf #toolbarViewerRight {
+  justify-content: flex-end !important;
+}
+
+/* the ⋮ sits in a box of its own; centre it like the rest */
+html.ziaPdf #secondaryToolbarToggle {
+  display: flex !important;
+  align-items: center;
+  height: 100%;
+}
+
+/* what Dia doesn't have in the bar (the find button and its bar, the
+ * page arrows, "of 2", the zoom menu; Ctrl+F still finds) */
+html.ziaPdf #toolbarViewerLeft > :is(.toolbarButtonSpacer, .toolbarButtonWithContainer:has(#viewFindButton), .hiddenSmallView:has(#previous), .toolbarHorizontalGroup:has(> #numPages)),
+html.ziaPdf #toolbarViewerMiddle > :not(.ziaPdfCentre),
+html.ziaPdf #toolbarViewerRight .verticalToolbarSeparator,
+html.ziaPdf #numPages {
+  display: none !important;
+}
+
+html.ziaPdf .ziaPdfTitle {
+  margin-inline-start: 8px;
+  overflow: hidden;
+  color: #fff;
+  font: 500 13px/1 -apple-system, BlinkMacSystemFont, "Helvetica Neue", system-ui, sans-serif;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+html.ziaPdf .ziaPdfCentre {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+html.ziaPdf .ziaPdfSep {
+  flex: none;
+  width: 1px;
+  height: 18px;
+  margin: 0 8px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* round toolbar buttons (not the items in the ⋮ menu, which live inside
+   the toolbar too and keep pdf.js's full-width rows) */
+html.ziaPdf #toolbarContainer .toolbarButton:not(#secondaryToolbar *) {
+  flex: none;
+  width: 30px !important;
+  min-width: 30px !important;
+  height: 30px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 50% !important;
+  background-color: transparent !important;
+  outline-offset: -2px;
+}
+
+html.ziaPdf #toolbarContainer .toolbarButton:not(#secondaryToolbar *):hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+html.ziaPdf #toolbarContainer .toolbarButton:not(#secondaryToolbar *)::before {
+  width: 17px !important;
+  height: 17px !important;
+  mask-size: 17px 17px !important;
+  mask-position: center !important;
+  mask-repeat: no-repeat !important;
+  background-color: #fff !important;
+  opacity: 1 !important;
+}
+
+html.ziaPdf #toolbarContainer .toolbarButton:not(#secondaryToolbar *):disabled::before {
+  opacity: 0.35 !important;
+}
+
+html.ziaPdf .ziaPdfButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+html.ziaPdf .ziaPdfButton::before {
+  content: "";
+  display: block;
+}
+
+html.ziaPdf .ziaPdfFit::before { mask-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Crect x=%227%22 y=%223%22 width=%2210%22 height=%2218%22 rx=%221.5%22/%3E%3Cpath d=%22M10 9l2 -2l2 2M10 15l2 2l2 -2%22/%3E%3C/svg%3E"); }
+html.ziaPdf .ziaPdfRotate::before { mask-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M4.05 11a8 8 0 1 1 .5 4m-.5 5v-5h5%22/%3E%3C/svg%3E"); }
+html.ziaPdf .ziaPdfPen::before { mask-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M3 17c3 -3 5 -8 8 -8c2.5 0 1 5 3 5c1.5 0 2.5 -3 4 -3c1 0 1.5 1 2.5 2%22/%3E%3Cpath d=%22M14 20h7%22/%3E%3C/svg%3E"); }
+html.ziaPdf .ziaPdfUndo::before { mask-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M9 14l-4 -4l4 -4%22/%3E%3Cpath d=%22M5 10h11a4 4 0 1 1 0 8h-1%22/%3E%3C/svg%3E"); }
+html.ziaPdf .ziaPdfRedo::before { mask-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M15 14l4 -4l-4 -4%22/%3E%3Cpath d=%22M19 10h-11a4 4 0 1 0 0 8h1%22/%3E%3C/svg%3E"); }
+
+html.ziaPdf #toolbarContainer .ziaPdfPen[aria-pressed="true"],
+html.ziaPdf #toolbarContainer .ziaPdfPen[aria-pressed="true"]:hover {
+  background-color: rgba(138, 180, 245, 0.25) !important;
+}
+
+html.ziaPdf #toolbarContainer .ziaPdfPen[aria-pressed="true"]::before {
+  background-color: #cfe0fb !important;
+}
+
+/* the page: a dark box with "/ 2" beside it */
+html.ziaPdf .ziaPdfCentre .loadingInput {
+  display: flex;
+  align-items: center;
+}
+
+html.ziaPdf #pageNumber {
+  appearance: textfield !important;
+  box-sizing: border-box;
+  width: 30px !important;
+  height: 20px !important;
+  margin: 0 !important;
+  padding: 0 3px !important;
+  border: none !important;
+  border-radius: 2px !important;
+  background: #1e1e1e !important;
+  color: #fff !important;
+  font: 12.5px/20px -apple-system, BlinkMacSystemFont, "Helvetica Neue", system-ui, sans-serif !important;
+  font-variant-numeric: tabular-nums;
+  text-align: center !important;
+}
+
+html.ziaPdf #pageNumber::-moz-number-spin-box {
+  display: none;
+}
+
+html.ziaPdf .ziaPdfCount,
+html.ziaPdf .ziaPdfZoom {
+  color: #fff;
+  font: 12.5px/20px -apple-system, BlinkMacSystemFont, "Helvetica Neue", system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+html.ziaPdf .ziaPdfCount {
+  margin-inline-start: 6px;
+}
+
+/* the zoom: a dark box between − and + */
+html.ziaPdf .ziaPdfZoom {
+  min-width: 44px;
+  height: 20px;
+  padding: 0 6px;
+  box-sizing: border-box;
+  border-radius: 2px;
+  background: #1e1e1e;
+  text-align: center;
+}
+
+/* the pen's row: Firefox's tools, centred under the toolbar */
+html.ziaPdf .ziaPdfTools {
+  position: absolute;
+  top: var(--zia-pdf-toolbar);
+  left: 0;
+  right: 0;
+  height: var(--zia-pdf-tools);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: #333;
+}
+
+html.ziaPdf.ziaPdfToolsOpen .ziaPdfTools {
+  display: flex;
+}
+
+html.ziaPdf .ziaPdfTools #editorModeButtons {
+  display: flex !important;
+  align-items: center;
+  gap: 2px;
+}
+
+html.ziaPdf .ziaPdfTools .toolbarButton {
+  width: 28px !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  border-radius: 7px !important;
+}
+
+html.ziaPdf .ziaPdfTools .toolbarButton.toggled,
+html.ziaPdf .ziaPdfTools .toolbarButton.toggled:hover {
+  background-color: rgba(138, 180, 245, 0.25) !important;
+}
+
+html.ziaPdf .ziaPdfTools .toolbarButton.toggled::before {
+  background-color: #cfe0fb !important;
+}
+
+/* ------------------------------------------------------------------ */
+/* The sidebar: thumbnails only, flush left, Dia's blue square frame      */
+/* ------------------------------------------------------------------ */
+
+html.ziaPdf #viewsManager {
+  --sidebar-width: 213px !important;
+  --sidebar-block-padding: 0px !important;
+  --sidebar-bg-color: #27292b !important;
+  --sidebar-backdrop-filter: none !important;
+  --image-outline: none !important;
+  --image-shadow: none !important;
+  --image-hover-shadow: 0 0 0 4px rgba(255, 255, 255, 0.22) !important;
+  --image-current-shadow: 0 0 0 4px var(--zia-pdf-blue) !important;
+  --image-current-focused-outline-color: var(--zia-pdf-blue) !important;
+
+  inset-block-start: 100% !important;
+  height: var(--viewer-container-height) !important;
+  padding: 0 !important;
+  border: none !important;
+  border-inline-end: 1px solid #585a5a !important;
+  border-radius: 0 !important;
+  background: #27292b !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+html.ziaPdf #outerContainer.viewsManagerOpen #viewsManager {
+  inset-inline-start: 0 !important;
+}
+
+/* Dia's sidebar is just the pages */
+html.ziaPdf #viewsManagerHeader {
+  display: none !important;
+}
+
+html.ziaPdf #thumbnailsView {
+  --thumbnail-width: 86px !important;
+  gap: 34px !important;
+  padding: 16px 12px 34px !important;
+}
+
+html.ziaPdf #thumbnailsView > .thumbnail {
+  --input-dim: 0px !important;
+  --gap-between-input-and-thumbnail: 0px !important;
+}
+
+html.ziaPdf #thumbnailsView > .thumbnail > input {
+  display: none !important;
+}
+
+html.ziaPdf #thumbnailsView .thumbnailImageContainer,
+html.ziaPdf #thumbnailsView .thumbnailImageContainer img {
+  border-radius: 0 !important;
+}
+
+/* PDF.js sizes each thumbnail's height for its own, wider thumbnails; at
+ * Dia's narrower width the height follows the page's own shape instead. */
+html.ziaPdf #thumbnailsView .thumbnailImageContainer {
+  height: auto !important;
+}
+
+html.ziaPdf #thumbnailsView .thumbnailImageContainer img {
+  display: block;
+  height: auto !important;
+}
+
+/* the page number under each page, not on it */
+html.ziaPdf #thumbnailsView > .thumbnail > .thumbnailImageContainer::after {
+  top: calc(100% + 8px) !important;
+  bottom: auto !important;
+  min-width: 0 !important;
+  height: auto !important;
+  padding: 0 !important;
+  border: none !important;
+  outline: none !important;
+  background: none !important;
+  color: #fff !important;
+  font-size: 12px !important;
+}
+
+/* ------------------------------------------------------------------ */
+/* The pages: on Dia's dark grey, without PDF.js's drop shadow            */
+/* ------------------------------------------------------------------ */
+
+html.ziaPdf #viewerContainer {
+  background-color: #282828;
+}
+
+html.ziaPdf .pdfViewer .page {
+  border-image: none !important;
+  box-shadow: none !important;
+}

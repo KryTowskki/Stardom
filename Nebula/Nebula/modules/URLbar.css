@@ -1,0 +1,104 @@
+/* ------------------ URLBar styling ------------------ */
+
+/* URL bar background - default state */
+.urlbar-background {
+    background: var(--nebula-color) !important;
+    border-radius: var(--nebula-border-radius) !important;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
+    border: 0.4px solid light-dark(rgba(60, 60, 60, 0.03), rgba(255, 255, 255, 0.07)) !important;
+}
+
+#urlbar-input {
+  font-weight: 505 !important;
+  font-size: 14px !important;
+}
+
+#urlbar:hover:not([open]) .urlbar-background {
+    background-color: light-dark(rgba(255,255,255,0.75), rgba(100,100,100,0.14)) !important;
+    box-shadow: 0 0 0px var(--nebula-color-shadow) !important;
+}
+
+/* When URL bar is open - smooth visual effect */
+#urlbar[open] .urlbar-background {
+    background: light-dark(rgba(255,255,255,0.9), rgba(20,20,20, 0.7)) !important;
+    outline: none !important;
+    scale: 1.07 !important;
+}
+
+#urlbar[open] {
+    --sidebar-width: 700px; /* ajuste conforme sua sidebar */
+    margin-left: calc(var(--sidebar-width) / 7) !important;
+    box-shadow: 0 0px 0px var(--nebula-color-shadow);
+    overflow: hidden !important;
+    border-radius: 8px !important;
+    backdrop-filter: var(--nebula-glass) !important;
+    animation: fadeIn 0.2s ease-in !important;
+    outline: 0.6px solid light-dark(rgba(60, 60, 60, 0.1), rgba(255, 255, 255, 0.08)) !important;
+}
+
+/* Opacity for URL bar when opening */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+#main-window #urlbar[open] {
+    border-radius: 9px !important;
+}
+
+/* ------------------ Misc Styling ------------------ */
+
+/* Center text in URL bar */
+#urlbar .urlbar-input {
+    text-align: center !important;
+    position: relative;
+}
+
+
+/* ------------------ Links Animation ------------------ */
+
+@keyframes url-links-appear {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  60% {
+    transform: scale(1.0);
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+#urlbar-results .urlbarView-row {
+  opacity: 0;
+  animation: url-links-appear 0.1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Staggered delay (50ms) for 5 results */
+#urlbar-results .urlbarView-row:nth-child(1) { animation-delay: 0s; }
+#urlbar-results .urlbarView-row:nth-child(2) { animation-delay: 0.05s; }
+#urlbar-results .urlbarView-row:nth-child(3) { animation-delay: 0.1s; }
+#urlbar-results .urlbarView-row:nth-child(4) { animation-delay: 0.15s; }
+#urlbar-results .urlbarView-row:nth-child(5) { animation-delay: 0.2s; }
+
+/* ------------------ URLBar Website Animation ------------------ */
+
+/* Style 1 - Default */
+.browserStack {
+    transition: all 0.25s cubic-bezier(0.175, 0.385, 0.12, 1) !important;
+}
+
+#browser:has(#urlbar[open]) .browserStack {
+    scale: 1.07 !important;
+    filter: brightness(90%) blur(30px) saturate(100%) !important;
+    opacity: 1 !important;
+}

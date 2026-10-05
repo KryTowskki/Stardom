@@ -1,0 +1,28 @@
+#zen-media-controls-toolbar > toolbaritem {
+  border-radius: 12px !important;
+}
+
+.zen-media-card {
+    /*background color of the player*/
+    background: linear-gradient(
+        to bottom,
+        light-dark(
+        color-mix(in srgb, var(--zen-primary-color) 35%, transparent),
+        color-mix(in srgb, var(--zen-primary-color) 100%, transparent)
+    ) 0%,
+      light-dark(
+        rgba(255, 255, 255, 0.7),
+        rgba(0, 0, 0, 0.7)
+      ) 80%,
+        rgba(0, 0, 0, 0) 100%
+    );
+    /*highlight*/
+    box-shadow: inset 0 1px 1px 0px light-dark(color-mix(in srgb, var(--zen-primary-color) 10%, white),rgba(255,255,255,0.25)),
+                0px 2px 3px 0px rgba(0, 0, 0, 0) !important;
+}
+
+/*remove the shadow for the text*/
+.zen-media-info-vbox::before {
+  background: transparent !important;
+}
+

@@ -1,0 +1,32 @@
+#preferences-root{
+  background-color: transparent !important;
+}
+
+/* ---------------- Transparent backgrounds for all about: pages ---------------- */
+
+
+@-moz-document url(about:home), url(about:newtab), url(about:privatebrowsing) {
+  body, .App{
+    background-color: transparent !important;
+  }
+
+  .top-sites-list, .personalizeButtonWrapper{
+    opacity: 0 !important;
+    transition: opacity 0.3s ease-in-out;
+
+    &:hover{
+      opacity: 1 !important;
+    }
+  }
+  
+  .App > div:nth-child(2), .wallpaper{
+    display: none !important;
+  }
+}
+
+
+/* Fixes the transparent dialogs. */
+.dialogFrame {
+  background: var(--zen-dialog-background);
+  border-radius: 8px;
+}

@@ -1,0 +1,95 @@
+/* ----------------------------- Workspace Button ---------------------------- */
+
+/* Necessary fix to prevent button resizing */
+#zen-workspaces-button toolbarbutton {
+  flex-shrink: 0 !important;
+  width: auto !important;
+  max-width: none !important;
+  min-width: 26px !important;
+}
+
+#zen-workspaces-button {
+  container-type: initial !important;
+  width: auto !important;
+  padding: 3px !important;
+  border-radius: calc(var(--nebula-border-radius) - 2px) !important;
+  transition: box-shadow 0.3s ease,
+              background-color 0.3s ease;
+}
+
+#zen-workspaces-button .subviewbutton {
+  border-radius: calc(var(--nebula-border-radius) - 4.5px) !important;
+  font-size: 16px !important;
+  opacity: 0.75 !important;
+  filter: grayscale(var(--nebula-workspace-grayscale, 100%)) !important;
+  transition: background-color 0.2s ease,
+              filter 0.3s ease,
+              opacity 0.3s ease-out,
+              transform 0.2s ease !important;
+}
+
+#zen-workspaces-button .subviewbutton:hover {
+  filter: grayscale(0%) brightness(1.5) !important;
+  opacity: 1 !important;
+}
+
+#zen-workspaces-button .subviewbutton:hover > img,
+#zen-workspaces-button .subviewbutton:hover > svg {
+  opacity: 1 !important;
+}
+
+#zen-workspaces-button .subviewbutton:active {
+  filter: grayscale(0%) !important;
+  transform: scale(0.85) !important;
+
+}
+
+#zen-workspaces-button .subviewbutton:active:hover {
+  transform: scale(0.9) !important;
+}
+
+#zen-workspaces-button .subviewbutton[active] {
+  position: relative;
+  overflow: hidden !important;
+  filter: grayscale(0%) !important;
+  opacity: 1 !important;
+  transition: transform 0.15s ease-out !important;
+  border-radius: 12px !important;
+  outline: 0.4px solid light-dark(rgba(60, 60, 60, 0.06), rgba(255, 255, 255, 0.15)) !important;
+}
+
+/* ------------------------- Style 1 (Default) ------------------------------- */
+
+@media not ((-moz-pref("nebula-workspace-style", 0)) or
+            (-moz-pref("nebula-workspace-style", 2))) {
+  
+  #zen-workspaces-button {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0) !important;
+  }
+
+  #zen-workspaces-button:hover {   
+    border-radius: 13px !important;
+    box-shadow: 0 0px 0px var(--nebula-color-shadow) !important;
+  }
+
+  #zen-workspaces-button .subviewbutton {
+    --toolbarbutton-hover-background: color-mix(in srgb,
+      var(--zen-branding-bg-reverse) 10%,
+      transparent 90%) !important;
+  }
+
+  #zen-workspaces-button .subviewbutton:hover {
+    background-color: light-dark(rgba(255, 255, 255, 0),
+                                 rgba(100, 100, 100, 0)) !important;
+  }
+
+  #zen-workspaces-button .subviewbutton:active {
+    background-color: var(--toolbarbutton-active-background) !important;
+  }
+
+  #zen-workspaces-button .subviewbutton[active] {
+    background-color: light-dark(rgba(255, 255, 255, 0.3),
+                                 rgba(255, 255, 255, 0.2)) !important;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2) !important;
+  }
+}

@@ -1,0 +1,57 @@
+/* ------------------------- GENERAL ZEN UI ------------------------- */
+
+/* Main UI tint */
+#zen-main-app-wrapper {
+  background: var(--nebula-ui-tint) !important;
+}
+
+/* Global overrides */
+:root {
+  --attention-dot-color: transparent !important;
+  --zen-themed-toolbar-bg-transparent: transparent !important;
+}
+
+:root[nebula-zen-gradient-contrast-zero] {
+  --zen-main-browser-background: transparent !important;
+}
+
+/* Required for blur rendering */
+browser {
+    transform: translateZ(0);
+}
+
+/* ------------------- FLOATING STATUSBAR ------------------- */
+
+#statuspanel {
+  margin: 10px !important;
+  pointer-events: none !important; 
+}
+
+#statuspanel-label {
+  border-radius: 4px !important;
+  padding: 4px 10px !important;
+  font-size: 12.5px !important;
+  border: 0.8px solid light-dark(rgba(60, 60, 60, 0.2), rgba(255, 255, 255, 0.1)) !important;
+  box-shadow: 0 0px 14px light-dark(rgba(255, 255, 255, 0.5), rgba(43, 43, 43, 0.5)) !important;
+  
+  /* Adicionando cor de fundo semitransparente no label, pois ele que carrega o fundo */
+  background-color: light-dark(rgba(255, 255, 255, 1), rgba(43, 43, 43, 1)) !important;
+}
+
+/* ------------------- MENU ANIMATIONS ------------------- */
+
+@media not (-moz-pref("nebula-disable-menu-animations")) {
+:root { --nebula-menu-animation: true; }
+}
+
+/* Keyframes */
+@keyframes nebula-menu-item-enter {
+  0% { opacity: 0; transform: translateY(-6px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Animation class */
+.nebula-menu-anim {
+  animation: nebula-menu-item-enter 0.15s cubic-bezier(0.4, 0, 0.2, 1) both;
+  backface-visibility: hidden;
+}

@@ -1,0 +1,324 @@
+@media not -moz-pref("nebula.pip.disabled") {
+  @-moz-document url("chrome://global/content/pictureinpicture/player.xhtml") {
+* {
+  color-scheme: light dark;
+  /* Pega a cor de destaque do Zen Browser dinamicamente */
+  --nebula-primary-color: var(--zen-primary-color, var(--zen-colors-primary, #a0d490));
+  --nebula-colors-primary: light-dark(
+    color-mix(in srgb, var(--nebula-primary-color) 50%, #000 50%),
+    color-mix(in srgb, var(--nebula-primary-color) 20%, #1d1d1d 80%)
+  );
+  --nebula-colors-secondary: light-dark(
+    color-mix(in srgb, var(--nebula-colors-primary) 20%, #fff 80%),
+    color-mix(in srgb, var(--nebula-primary-color) 30%, #1d1d1d 70%)
+  );
+      --nebula-pip-ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --nebula-pip-duration: 0.35s;
+      --nebula-pip-accent: light-dark(var(--nebula-colors-primary), var(--nebula-primary-color));
+      --nebula-pip-border: light-dark(rgba(20,20,20,0.12), rgba(235,235,235,0.12));
+      --nebula-pip-shadow: 0 2px 10px rgba(0,0,0,0.35);
+      --nebula-mat-hz-background: light-dark(rgba(255,255,255,0.92), rgba(0,0,0,0.92));
+      --nebula-mat-hz-background-tinted: light-dark(
+        color-mix(in srgb, var(--nebula-primary-color) 30%, rgba(255,255,255,0.92)),
+        color-mix(in srgb, var(--nebula-colors-secondary) 40%, rgba(0,0,0,0.92))
+      );
+      --nebula-mat-hz-blur-radius: 40px;
+      --nebula-mat-hz-saturation: 3;
+      --nebula-mat-hz-contrast: 2;
+      --nebula-mat-ga-background: color-mix(in srgb, var(--nebula-colors-secondary) 92%, transparent);
+      --nebula-mat-ga-shadow-color: color-mix(in srgb, var(--nebula-colors-secondary) 75%, light-dark(#000, #fff));
+      --toolbarbutton-hover-background: color-mix(in srgb, light-dark(#1d1d1d, #ebebeb) 10%, transparent 90%);
+      --toolbarbutton-active-background: light-dark(rgba(0,0,0,0.07), rgba(255,255,255,0.11));
+    }
+
+    @media -moz-pref("nebula.theme.force-dark-shadows") {
+      * { --nebula-mat-ga-shadow-color: color-mix(in srgb, var(--nebula-colors-secondary) 75%, #000); }
+    }
+
+    @keyframes pip-fadein-html {
+      0%, 99% { background-color: transparent; scale: 0.85; }
+      99% { scale: 1; }
+      100% { background-color: #000; }
+    }
+
+    @keyframes pip-fadein-player {
+      0% { filter: blur(24px); opacity: 0; }
+      70% { filter: blur(4px); }
+      100% { filter: blur(0); opacity: 1; }
+    }
+
+    @media -moz-pref("nebula.pip.rounded") {
+      @media (-moz-platform: windows) {
+        window, :root, body { border-radius: 9px !important; }
+      }
+    }
+
+    :root { animation: pip-fadein-html 0.45s var(--nebula-pip-ease) !important; }
+
+    .player-holder {
+      border-radius: 7.6px !important;
+      animation: pip-fadein-player 0.45s var(--nebula-pip-ease) !important;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+
+    #controls {
+      opacity: 1 !important;
+
+      & > button {
+        opacity: 0 !important;
+        top: 10px !important;
+        translate: 0 -10px !important;
+        filter: blur(5px);
+        border-radius: 6px !important;
+        transition: opacity var(--nebula-pip-duration) var(--nebula-pip-ease),
+                    translate var(--nebula-pip-duration) var(--nebula-pip-ease),
+                    filter var(--nebula-pip-duration) var(--nebula-pip-ease),
+                    background-color 0.2s ease !important;
+        backdrop-filter: saturate(var(--nebula-mat-hz-saturation)) contrast(var(--nebula-mat-hz-contrast)) blur(var(--nebula-mat-hz-blur-radius)) !important;
+        background: var(--nebula-mat-hz-background) none !important;
+        box-shadow: var(--nebula-pip-shadow) !important;
+        border: 1px solid var(--nebula-pip-border) !important;
+
+        @media -moz-pref("nebula.pip.tinted-haze") {
+          background-color: var(--nebula-mat-hz-background-tinted) !important;
+        }
+
+        &::before {
+          content: "";
+          width: 16px;
+          height: 16px;
+          padding: 2px;
+          display: flex;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          align-content: center;
+          justify-content: center;
+          -moz-context-properties: fill;
+          fill: light-dark(#000, #fff) !important;
+        }
+
+        &#close::before { content: url("chrome://browser/skin/zen-icons/close.svg") !important; }
+        &#minimize::before { content: url("chrome://browser/skin/zen-icons/unpin.svg") !important; }
+        &#unpip::before { content: url("chrome://browser/skin/zen-icons/screen.svg") !important; }
+        &:hover { background-color: light-dark(#fff, #000) !important; }
+      }
+
+      #controls-bottom-gradient { display: none !important; }
+
+      #controls-bottom {
+        opacity: 0 !important;
+        bottom: 5px !important;
+        translate: 0 10px !important;
+        background-color: var(--nebula-mat-hz-background) !important;
+        border-radius: 10px !important;
+        padding: 10px 15px !important;
+        margin: 0 5px 5px !important;
+        width: min(calc(100% - 10px), 700px) !important;
+        box-sizing: border-box !important;
+        box-shadow: var(--nebula-pip-shadow) !important;
+        backdrop-filter: saturate(var(--nebula-mat-hz-saturation)) contrast(var(--nebula-mat-hz-contrast)) blur(var(--nebula-mat-hz-blur-radius)) !important;
+        filter: blur(10px);
+        transition: opacity var(--nebula-pip-duration) var(--nebula-pip-ease),
+                    translate var(--nebula-pip-duration) var(--nebula-pip-ease),
+                    filter var(--nebula-pip-duration) var(--nebula-pip-ease) !important;
+        border: 1px solid var(--nebula-pip-border) !important;
+        left: calc(50% - 5px) !important;
+        transform: translateX(-50%) !important;
+
+        @media -moz-pref("nebula.pip.tinted-haze") {
+          background-color: var(--nebula-mat-hz-background-tinted) !important;
+        }
+
+        @media -moz-pref("nebula.pip.native-border-radius") {
+          bottom: 0 !important;
+          @media (width <= 710px) {
+            width: min(100%, 700px) !important;
+            margin: 0 !important;
+            left: 50% !important;
+            @media (-moz-platform: macos) { border-radius: 5px !important; }
+          }
+        }
+
+        .start-controls {
+          @media (width > 300px) { display: flex !important; }
+          #timestamp {
+            font-size: 12px !important;
+            color: light-dark(#000, #fff) !important;
+          }
+        }
+
+        .end-controls { display: flex !important; }
+
+        #scrubber, #audio-scrubber {
+          margin: 0 !important;
+          &::-moz-range-progress { background: var(--nebula-pip-accent) !important; }
+          &::-moz-range-track { background-color: light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.1)) !important; }
+          &::-moz-range-thumb {
+            background: light-dark(var(--nebula-colors-primary), #fff) !important;
+            width: 12px !important;
+            height: 12px !important;
+            border: none !important;
+          }
+        }
+
+        #audio-scrubber::-moz-range-thumb {
+          width: 8px !important;
+          height: 8px !important;
+          opacity: 1 !important;
+        }
+
+        button {
+          opacity: 1 !important;
+          position: relative;
+          padding: 6px !important;
+          background-size: 16px !important;
+          width: 28px !important;
+          height: 28px !important;
+          border-radius: 6px !important;
+          transition: background-color 0.2s ease !important;
+          -moz-context-properties: fill;
+          fill: light-dark(#000, #fff) !important;
+
+          &[disabled] {
+            cursor: default !important;
+            fill-opacity: 0.4 !important;
+            &::after { display: none !important; }
+          }
+
+          &:not([disabled]) {
+            &:hover { background-color: var(--toolbarbutton-hover-background) !important; }
+            &:active { background-color: var(--toolbarbutton-active-background) !important; }
+          }
+
+          &#playpause { background-image: url("chrome://browser/skin/zen-icons/media-play.svg") !important; }
+          &#audio { background-image: url("chrome://browser/skin/zen-icons/media-unmute.svg") !important; }
+          &#fullscreen { background-image: url("chrome://browser/skin/zen-icons/fullscreen.svg") !important; }
+
+          &#seekBackward, &#seekForward {
+            background-image: url("chrome://browser/skin/zen-icons/reload.svg") !important;
+            &::before {
+              content: "5";
+              font-size: 8px;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+            }
+          }
+
+          &#seekBackward {
+            scale: -1 1;
+            &::before { transform: translate(50%, -50%); scale: -1 1; }
+            &::after { scale: -1 1; }
+          }
+
+          &#seekForward::before { transform: translate(-50%, -50%); }
+        }
+
+        .controls-bottom-upper {
+          margin: 0 0 5px 0 !important;
+          width: 100% !important;
+          height: fit-content !important;
+
+          .scrubber-no-drag { margin: 0 !important; }
+          &:has(#scrubber[hidden]) { display: none !important; margin: 0 !important; }
+        }
+
+        .controls-bottom-lower { margin: 0 !important; }
+      }
+
+      #settings {
+        bottom: 80px !important;
+        right: 0 !important;
+        display: block !important;
+        translate: 0 0;
+        transition: opacity var(--nebula-pip-duration) var(--nebula-pip-ease),
+                    translate var(--nebula-pip-duration) var(--nebula-pip-ease) !important;
+
+        .arrow { display: none !important; }
+        label, legend {
+          font-family: system-ui !important;
+          color: light-dark(#000, #fff) !important;
+        }
+
+        .slider {
+          background-color: rgba(0, 0, 0, 0.07) !important;
+          outline: 1px solid light-dark(#8f8f9d, #bfbfc9) !important;
+          &::before { background-color: light-dark(#8f8f9d, #bfbfc9) !important; }
+        }
+
+        input {
+          &:checked { border-color: var(--nebula-pip-accent) !important; }
+          &:checked + .slider {
+            background-color: var(--nebula-pip-accent) !important;
+            outline-color: var(--nebula-pip-accent) !important;
+            &::before { background-color: #fff !important; }
+          }
+        }
+
+        & > .panel-fieldset {
+          background-color: var(--nebula-mat-ga-background) !important;
+          backdrop-filter: blur(15px);
+          filter: blur(0);
+          transition: backdrop-filter var(--nebula-pip-duration) var(--nebula-pip-ease),
+                      filter var(--nebula-pip-duration) var(--nebula-pip-ease);
+          border: 1px solid light-dark(rgba(20,20,20,0.2), rgba(235,235,235,0.3)) !important;
+          box-shadow: 0 0 10px var(--nebula-mat-ga-shadow-color) !important;
+          padding: 0 !important;
+        }
+
+        .grey-line {
+          width: calc(100% - 10px) !important;
+          margin: 0 auto !important;
+          background-color: light-dark(rgba(20,20,20,0.2), rgba(235,235,235,0.3)) !important;
+        }
+
+        &.hide {
+          translate: 0 10px !important;
+          opacity: 0 !important;
+          pointer-events: none !important;
+          & > .panel-fieldset {
+            backdrop-filter: blur(0) !important;
+            filter: blur(5px);
+          }
+        }
+      }
+
+      &.muted #controls-bottom #audio {
+        background-image: url("chrome://browser/skin/zen-icons/media-mute.svg") !important;
+      }
+
+      &.playing #controls-bottom #playpause {
+        background-image: url("chrome://browser/skin/zen-icons/media-pause.svg") !important;
+      }
+    }
+
+    body:fullscreen #controls[showing]:hover, body:not(:fullscreen) #controls:hover {
+      & > button {
+        opacity: 1 !important;
+        translate: 0 0 !important;
+        filter: blur(0) !important;
+      }
+      #controls-bottom {
+        opacity: 1 !important;
+        translate: 0 0 !important;
+        filter: blur(0);
+      }
+    }
+
+    body:fullscreen {
+      &:has(#controls:not([showing])) { cursor: none !important; }
+      #controls #controls-bottom #fullscreen {
+        background-image: url("chrome://browser/skin/zen-icons/fullscreen-exit.svg") !important;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      :root, .player-holder { animation: none !important; }
+      #controls > button, #controls-bottom, #settings, #settings > .panel-fieldset {
+        transition-duration: 0.01ms !important;
+      }
+    }
+  }
+}

@@ -1,0 +1,123 @@
+/* ------------------------ Glance Animation ----------------------- */
+
+/* 1. Transição fluida e otimizada para o desfoque de fundo */
+.browserSidebarContainer.zen-glance-background {
+  transition: filter 0.4s cubic-bezier(0.2, 0, 0, 1) !important;
+}
+
+.browserSidebarContainer.zen-glance-background.deck-selected {
+  filter: blur(10px) contrast(100%);
+}
+
+.browserSidebarContainer.zen-glance-overlay .browserStack { 
+  box-shadow: none !important;
+}
+
+.zen-glance-sidebar-container {
+  translate: -15% 15% !important;
+  transition: translate 0.4s cubic-bezier(0.2, 0, 0, 1) !important;
+}
+
+/* 2. NOVA ANIMAÇÃO DE ENTRADA (Mata o bug do retângulo do texto) 
+   Cria um efeito de entrada moderno (Fade + Scale) que ignora a origem do clique */
+@keyframes zen-glance-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* 3. Janela Flutuante - Totalmente ancorada e fluida */
+.browserStack > browser[zen-glance-selected="true"] {
+  position: absolute !important;
+  
+  /* Força a posição final IMEDIATAMENTE, impedindo que o Zen 
+     estique a janela a partir da linha de texto clicada */
+  inset: 5% 1% !important; /* Substitui top, left, width e height de uma vez */
+  
+  background: light-dark(rgb(255 255 255 / 45%), rgb(0 0 0 / 45%)) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0%) !important;
+  
+  /* Aplica a nova animação criada ali em cima */
+  animation: zen-glance-pop 0.4s cubic-bezier(0.2, 0, 0, 1) forwards !important;
+  
+  /* Transição extra apenas para o hover */
+  transition: box-shadow 0.3s cubic-bezier(0.2, 0, 0, 1) !important;
+  
+  /* Otimização de GPU (evita engasgos na animação) */
+  will-change: transform, opacity;
+}
+
+/* 4. Hover mais suave (elevação e sombra) */
+.browserStack > browser[zen-glance-selected="true"]:hover {
+  box-shadow: 0 12px 32px rgb(0 0 0 / 25%) !important;
+}
+
+/* ---------------------- Tab Loading Animation ---------------------- */
+
+.browserSidebarContainer:not([zen-split="true"]):not(:has(.zen-glance-background)) {
+  transform-origin: center;
+  transition: transform 0.2s ease-out !important,
+              filter 0.2s cubic-bezier(0.2, 0.7, 0.3, 1.2) !important;
+}
+
+#main-window:has(.tabbrowser-tab[selected][busy]) 
+.browserSidebarContainer:not([zen-split="true"]):not(:has(.zen-glance-background)) {
+  transform: scale(0.988) !important;
+  transition-delay: 0.2s !important;
+}
+
+/* --------------------- Tab Switch Animation --------------------- */
+
+
+@media (-moz-pref("nebula-tab-switch-animation", 2)) {
+  #tabbrowser-tabpanels > hbox:not([zen-split="true"]):not(.zen-glance-background):not(:has(.zen-glance-background)) {
+    transition: all 0.9s cubic-bezier(0.35, 1.1, 0.1, 1), filter 0.35s ease-out !important;
+    scale: 0.99 !important;
+    opacity: 1;
+    filter: blur(0px) !important;
+  }
+
+  #tabbrowser-tabpanels > hbox.deck-selected:not([zen-split="true"]):not(.zen-glance-background):not(:has(.zen-glance-background)) {
+    scale: 1 !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+}
+
+/* ------------------ Custom Split View Animation ------------------- */
+
+@media not (-moz-pref("nebula-tab-switch-animation", 0)) {
+  @keyframes scaleAndBrighten {
+
+    0% {
+      transform: scale(0.95);
+      opacity: 0;
+      filter: brightness(0);
+    }
+
+    50% {
+      filter: brightness(0);
+    }
+
+    100% {
+      transform: scale(1);
+      opacity: 1;
+      filter: brightness(1);
+    }
+  }
+
+  #tabbrowser-tabpanels[zen-split-view="true"] {
+    transition: none !important;
+  }
+
+  #tabbrowser-tabpanels[zen-split-view="true"] .browserSidebarContainer {
+
+    animation: scaleAndBrighten 0.6s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  }
+}

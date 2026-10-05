@@ -1,0 +1,18 @@
+/* -------------------- SINGLE TOOLBAR -------------------- */
+
+html[nebula-single-toolbar][nebula-compact-mode] #titlebar {
+  top: var(--zen-element-separation) !important;
+  left: var(--zen-element-separation) !important;
+  height: calc(100% - (var(--zen-element-separation) * 2)) !important;
+}
+
+/* -------------------------- Personal Toolbar --------------------------- */
+
+#PersonalToolbar toolbarbutton:hover {
+  background-color: light-dark(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.08)) !important;
+  box-shadow: 0 0px 3px var(--nebula-color-shadow) !important;
+  outline: 0.4px solid light-dark(rgba(60, 60, 60, 0.17), rgba(255, 255, 255, 0.08)) !important;
+  height: 29px !important;
+  border-radius: 10px !important;
+  transition: background-color 0.3s ease, box-shadow 0.2s ease-out !important;
+}

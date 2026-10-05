@@ -1,0 +1,12 @@
+/* ------------------------- BUTTONS ABOVE URLBAR ------------------------- */
+
+/* Custom icon and styling for main menu button */
+@media not (-moz-pref("nebula-turn-off-zen-menu-icon")) {
+  toolbarbutton#PanelUI-menu-button {
+    list-style-image: url("file:///C:/Users/Samsung/Pictures/zen.svg") !important;
+  }
+  toolbarbutton#PanelUI-menu-button image {
+    scale: 1;
+  }
+}
+
