@@ -20,65 +20,7 @@
         "options": [
           { "label": "No Animation", "value": 0 },
           { "label": "Default", "value": 1 },
-          { "label": "Bounce Up", "value": 3 },
-          { "label": "Bounce Smooth", "value": 2 },
-          { "label": "Crossfade", "value": 4 },
-          { "label": "Zoom Out", "value": 5 }
-        ]
-      },
-      {
-        "type": "dropdown",
-        "property": "nebula-tab-loading-animation",
-        "label": "Tab Loading Animation",
-        "value": "number",
-        "defaultValue": 1,
-        "placeholder": false,
-        "options": [
-          { "label": "No Animation", "value": 0 },
-          { "label": "Default", "value": 1 },
-          { "label": "Scale Blur", "value": 3 },
-          { "label": "More Blur", "value": 2 },
-          { "label": "Grayscale", "value": 4 },
-          { "label": "Grayscale + Blur", "value": 5 },
-          { "label": "Blur (Old Default)", "value": 6 }
-        ]
-      },
-    {
-      "type": "separator",
-      "label": "🛰️ URL Bar Animations",
-      "margin": "15px 0 15px 0"
-    },
-      {
-        "type": "dropdown",
-        "property": "nebula-urlbar-animation",
-        "label": "URL Bar Animation",
-        "value": "number",
-        "defaultValue": 1,
-        "placeholder": false,
-        "options": [
-          { "label": "No Animation", "value": 0 },
-          { "label": "Default", "value": 1 },
-          { "label": "Scale Down", "value": 2 },
-          { "label": "Grayscale", "value": 3 }
-        ]
-      },
-    {
-      "type": "separator",
-      "label": "🔖 Bookmark bar",
-      "margin": "15px 0 15px 0"
-    }, 
-      {
-        "type": "dropdown",
-        "value": "number",
-        "property": "nebula-bookmarks-autohide",
-        "label": "Automatically hide the bookmarks bar ",
-        "defaultValue": 0,
-        "placeholder": false,
-        "options": [
-          {"label": "Disable","value": 0},  
-          {"label": "Display if hovered over topbar","value": 1},           
-          {"label": "Display when search","value": 2},
-          {"label": "Display in both cases","value": 3}
+          { "label": "Bounce Smooth", "value": 2 }
         ]
       },
     {
@@ -100,20 +42,6 @@
           { "label": "RGB", "value": 3 }
         ]
       },
-      {
-        "type": "dropdown",
-        "property": "nebula-active-tab-glow",
-        "label": "Active Tab Glow",
-        "value": "number",
-        "defaultValue": 0,
-        "placeholder": false,
-        "options": [
-          { "label": "None", "value": 0 },
-          { "label": "Zen color", "value": 1 },
-          { "label": "Tab Icon Color", "value": 2 }
-        ],
-        "margin": "12px 0"
-      },
     {
       "type": "separator",
       "label": "☄️ Workspace Buttons",
@@ -128,8 +56,7 @@
         "placeholder": false,
         "options": [
           { "label": "No background", "value": 0 },
-          { "label": "Default", "value": 1 },
-          { "label": "MacOS Dock Inspired", "value": 2 }
+          { "label": "Default", "value": 1 }
         ]
       },
     {
@@ -157,11 +84,6 @@
     },
       {
         "type": "checkbox",
-        "property": "nebula-macos-style-buttons",
-        "label": "Enable macOS-style window control buttons"
-      },
-      {
-        "type": "checkbox",
         "property": "zen.view.experimental-force-window-controls-left",
         "label": "Force window controls to left side (Restart)"
       },
@@ -180,26 +102,8 @@
 },
   {
     "type": "checkbox",
-    "property": "nebula-tabs-no-shadow",
-    "label": "Disable the shadow around web view",
-    "margin": "12px 0"
-  },
-  {
-    "type": "checkbox",
-    "property": "nebula-disable-container-styling",
-    "label": "Disable container tab styling",
-    "margin": "12px 0"
-  },
-  {
-    "type": "checkbox",
     "property": "nebula-pinned-tabs-bg",
     "label": "Disable background on pinned tabs",
-    "margin": "12px 0"
-  },
-  {
-    "type": "checkbox",
-    "property": "nebula-remove-workspace-indicator",
-    "label": "Disable workspace indicator",
     "margin": "12px 0"
   },
   {
@@ -224,18 +128,6 @@
     "type": "checkbox",
     "property": "nebula-folder-styling",
     "label": "Enable Zen Folders styling",
-    "margin": "12px 0"
-  },
-  {
-    "type": "checkbox",
-    "property": "nebula-nogaps-mod",
-    "label": "Enable NoGaps mod",
-    "margin": "12px 0"
-  },
-  {
-    "type": "checkbox",
-    "property": "nebula-pinned-extensions-mod",
-    "label": "Enable pinned extensions mod (see GitHub for setup)",
     "margin": "12px 0"
   },
 
