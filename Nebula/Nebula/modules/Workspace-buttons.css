@@ -11,7 +11,7 @@
 #zen-workspaces-button {
   container-type: initial !important;
   width: auto !important;
-  padding: 3px !important;
+  padding: 2px !important;
   border-radius: calc(var(--nebula-border-radius) - 2px) !important;
   transition: box-shadow 0.3s ease,
               background-color 0.3s ease;
