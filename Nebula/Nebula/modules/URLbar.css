@@ -13,7 +13,7 @@
   font-size: 14px !important;
 }
 
-#urlbar:hover:not([open]) .urlbar-background {
+#urwlbar:hover:not([open]) .urlbar-background {
     background-color: light-dark(rgba(255,255,255,0.75), rgba(100,100,100,0.14)) !important;
     box-shadow: 0 0 0px var(--nebula-color-shadow) !important;
 }
@@ -56,6 +56,11 @@
 #urlbar .urlbar-input {
     text-align: center !important;
     position: relative;
+}
+
+/* Remove favicon background when row is selected */
+.urlbarView-row-inner[selected] .urlbarView-favicon {
+  background: none !important;
 }
 
 
